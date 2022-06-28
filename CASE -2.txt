@@ -1,0 +1,904 @@
+SQL> SELECT * FROM EMP;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL     
+---------- ---------- --------- ---------- --------- ---------- ----
+      7369 SMITH      CLERK           7902 17-DEC-80        800         
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600     
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250     
+      7566 JONES      MANAGER         7839 02-APR-81       2975         
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250     
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850         
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450         
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000         
+      7839 KING       PRESIDENT            17-NOV-81       5000         
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500         
+      7876 ADAMS      CLERK           7788 23-MAY-87       1100         
+      7900 JAMES      CLERK           7698 03-DEC-81        950         
+      7902 FORD       ANALYST         7566 03-DEC-81       3000         
+      7934 MILLER     CLERK           7782 23-JAN-82       1300         
+
+14 rows selected.
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT * FROM EMP
+  2  WHERE DEPTNO = (SELECT DEPTNO FROM DEPT
+  3*             WHERE DNAME LIKE '%S')
+  4  /
+WHERE DEPTNO = (SELECT DEPTNO FROM DEPT
+                *
+ERROR at line 2:
+ORA-01427: single-row subquery returns more than one row
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT * FROM EMP
+  2  WHERE DEPTNO IN (SELECT DEPTNO FROM DEPT
+  3*             WHERE DNAME LIKE '%S')
+SQL> /
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL     
+---------- ---------- --------- ---------- --------- ---------- ----
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600     
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250     
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250     
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850         
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500         
+      7900 JAMES      CLERK           7698 03-DEC-81        950         
+
+6 rows selected.
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1* SELECT * FROM DEPT
+SQL> /
+
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        10 ACCOUNTING     NEW YORK
+        20 RESEARCH       DALLAS
+        30 SALES          CHICAGO
+        40 OPERATIONS     BOSTON
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT * FROM EMP
+  2  WHERE DEPTNO IN (SELECT DEPTNO FROM DEPT
+  3*             WHERE DNAME IN ('OPERATIONS','ACCOUNTING')
+SQL> /
+                 WHERE DNAME IN ('OPERATIONS','ACCOUNTING')
+                                                          *
+ERROR at line 3:
+ORA-00907: missing right parenthesis
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT * FROM EMP
+  2  WHERE DEPTNO IN (SELECT DEPTNO FROM DEPT
+  3*             WHERE DNAME IN ('OPERATIONS',' ACCOUNTING')
+SQL> /
+                 WHERE DNAME IN ('OPERATIONS',' ACCOUNTING')
+                                                           *
+ERROR at line 3:
+ORA-00907: missing right parenthesis
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT * FROM EMP
+  2  WHERE DEPTNO IN (SELECT DEPTNO FROM DEPT
+  3*             WHERE DNAME IN (OPERATIONS, ACCOUNTING)
+SQL> /
+                 WHERE DNAME IN (OPERATIONS, ACCOUNTING)
+                                                       *
+ERROR at line 3:
+ORA-00907: missing right parenthesis
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT * FROM EMP
+  2  WHERE DEPTNO IN (SELECT DEPTNO FROM DEPT
+  3*             WHERE DNAME IN (OPERATIONS, ACCOUNTING)
+SQL> SELECT * FROM DEPT;
+
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        10 ACCOUNTING     NEW YORK
+        20 RESEARCH       DALLAS
+        30 SALES          CHICAGO
+        40 OPERATIONS     BOSTON
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT * FROM EMP
+  2  WHERE DEPTNO IN (SELECT DEPTNO FROM DEPT
+  3*             WHERE DNAME IN (OPERATIONS, ACCOUNTING))
+SQL> /
+                 WHERE DNAME IN (OPERATIONS, ACCOUNTING))
+                                             *
+ERROR at line 3:
+ORA-00904: "ACCOUNTING": invalid identifier
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT * FROM EMP
+  2  WHERE DEPTNO IN (SELECT DEPTNO FROM DEPT
+  3*             WHERE DNAME IN ('OPERATIONS',' ACCOUNTING'))
+SQL> /
+
+no rows selected
+
+SQL> EED
+SP2-0042: unknown command "EED" - rest of line ignored.
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT * FROM DEPT
+  2  WHERE LOC = 'CHICAGO' AND DEPTNO IN (SELECT DEPTNO FROM EMP
+  3*                                    WHERE COMM = 0)
+SQL> 
+SQL> /
+
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        30 SALES          CHICAGO
+
+SQL> SELECT * FROM EMP;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL     
+---------- ---------- --------- ---------- --------- ---------- ----
+      7369 SMITH      CLERK           7902 17-DEC-80        800         
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600     
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250     
+      7566 JONES      MANAGER         7839 02-APR-81       2975         
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250     
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850         
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450         
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000         
+      7839 KING       PRESIDENT            17-NOV-81       5000         
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500         
+      7876 ADAMS      CLERK           7788 23-MAY-87       1100         
+      7900 JAMES      CLERK           7698 03-DEC-81        950         
+      7902 FORD       ANALYST         7566 03-DEC-81       3000         
+      7934 MILLER     CLERK           7782 23-JAN-82       1300         
+
+14 rows selected.
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT * FROM DEPT
+  2  WHERE DNAME = 'RESEARCH' AND DEPTNO IN (SELECT DEPTNO FROM EMP
+  3*                                      WHERE JOB IN 'MANAGER')
+SQL> /
+
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        20 RESEARCH       DALLAS
+
+SQL> SELECT * FROM DEPT;
+
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        10 ACCOUNTING     NEW YORK
+        20 RESEARCH       DALLAS
+        30 SALES          CHICAGO
+        40 OPERATIONS     BOSTON
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT DNAME FROM DEPT
+  2  WHERE DEPTNO IN (SELECT DEPTNO FROM EMP
+  3*             WHERE COMM IS NOT NULL)
+SQL> /
+
+DNAME
+--------------
+SALES
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT DEPTNO FROM DEPT
+  2  WHERE DNAME = 'SALES' AND DEPTNO IN (SELECT DEPTNO FROM EMP
+  3*             WHERE JOB = 'MANAGER')
+SQL> /
+
+    DEPTNO
+----------
+        30
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT HIREDATE, JOB FROM EMP
+  2  WHERE DEPTNO IN (SELECT DEPTNO FROM DEPT
+  3*             WHERE DNAME = 'SALES')
+SQL> /
+
+HIREDATE  JOB
+--------- ---------
+20-FEB-81 SALESMAN
+22-FEB-81 SALESMAN
+28-SEP-81 SALESMAN
+01-MAY-81 MANAGER
+08-SEP-81 SALESMAN
+03-DEC-81 CLERK
+
+6 rows selected.
+
+SQL> SELECT * FROM EMP;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL     
+---------- ---------- --------- ---------- --------- ---------- ----
+      7369 SMITH      CLERK           7902 17-DEC-80        800         
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600     
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250     
+      7566 JONES      MANAGER         7839 02-APR-81       2975         
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250     
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850         
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450         
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000         
+      7839 KING       PRESIDENT            17-NOV-81       5000         
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500         
+      7876 ADAMS      CLERK           7788 23-MAY-87       1100         
+      7900 JAMES      CLERK           7698 03-DEC-81        950         
+      7902 FORD       ANALYST         7566 03-DEC-81       3000         
+      7934 MILLER     CLERK           7782 23-JAN-82       1300         
+
+14 rows selected.
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1* SELECT * FROM EMP
+SQL> ED
+Wrote file afiedt.buf
+
+  1   SELECT HIREDATE, JOB FROM EMP
+  2   WHERE DEPTNO IN (SELECT DEPTNO FROM DEPT
+  3*              WHERE DNAME IN 'SALES')
+SQL> /
+
+HIREDATE  JOB
+--------- ---------
+20-FEB-81 SALESMAN
+22-FEB-81 SALESMAN
+28-SEP-81 SALESMAN
+01-MAY-81 MANAGER
+08-SEP-81 SALESMAN
+03-DEC-81 CLERK
+
+6 rows selected.
+
+SQL> SELECT * FROM DEPT;
+
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        10 ACCOUNTING     NEW YORK
+        20 RESEARCH       DALLAS
+        30 SALES          CHICAGO
+        40 OPERATIONS     BOSTON
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT LOC, DNAME FROM DEPT
+  2  WHERE DEPTNO IN (SELECT DEPTNO FROM EMP
+  3* WHERE JOB = 'PRESIDENT')
+SQL> /
+
+LOC           DNAME
+------------- --------------
+NEW YORK      ACCOUNTING
+
+SQL> SELECT * FROM EMP;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL     
+---------- ---------- --------- ---------- --------- ---------- ----
+      7369 SMITH      CLERK           7902 17-DEC-80        800         
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600     
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250     
+      7566 JONES      MANAGER         7839 02-APR-81       2975         
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250     
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850         
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450         
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000         
+      7839 KING       PRESIDENT            17-NOV-81       5000         
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500         
+      7876 ADAMS      CLERK           7788 23-MAY-87       1100         
+      7900 JAMES      CLERK           7698 03-DEC-81        950         
+      7902 FORD       ANALYST         7566 03-DEC-81       3000         
+      7934 MILLER     CLERK           7782 23-JAN-82       1300         
+
+14 rows selected.
+
+SQL> SELECT * FROM DEPT;
+
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        10 ACCOUNTING     NEW YORK
+        20 RESEARCH       DALLAS
+        30 SALES          CHICAGO
+        40 OPERATIONS     BOSTON
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT DNAME FROM DEPT
+  2  WHERE DEPTNO IN (SELECT DEPTNO FROM EMP
+  3*            WHERE JOB = 'CLERK')
+SQL> /
+
+DNAME
+--------------
+ACCOUNTING
+RESEARCH
+SALES
+
+SQL> SELECT * FROM DEPT;
+
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        10 ACCOUNTING     NEW YORK
+        20 RESEARCH       DALLAS
+        30 SALES          CHICAGO
+        40 OPERATIONS     BOSTON
+
+SQL> SELECT * FROM EMP;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL     
+---------- ---------- --------- ---------- --------- ---------- ----
+      7369 SMITH      CLERK           7902 17-DEC-80        800         
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600     
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250     
+      7566 JONES      MANAGER         7839 02-APR-81       2975         
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250     
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850         
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450         
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000         
+      7839 KING       PRESIDENT            17-NOV-81       5000         
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500         
+      7876 ADAMS      CLERK           7788 23-MAY-87       1100         
+      7900 JAMES      CLERK           7698 03-DEC-81        950         
+      7902 FORD       ANALYST         7566 03-DEC-81       3000         
+      7934 MILLER     CLERK           7782 23-JAN-82       1300         
+
+14 rows selected.
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT * FROM DEPT
+  2* WHERE DNAME LIKE  '%E%E%'
+SQL> /
+
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        20 RESEARCH       DALLAS
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT * FROM EMP
+  2  WHERE DEPTNO IN (SELECT DEPTNO FROM DEPT
+  3*            WHERE LOC IN 'CHICAGO')
+SQL> /
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL     
+---------- ---------- --------- ---------- --------- ---------- ----
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600     
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250     
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250     
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850         
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500         
+      7900 JAMES      CLERK           7698 03-DEC-81        950         
+
+6 rows selected.
+
+SQL> SELECT * FROM DEPTL
+  2  
+SQL> 
+SQL> SELECT * FROM DEPT;
+
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        10 ACCOUNTING     NEW YORK
+        20 RESEARCH       DALLAS
+        30 SALES          CHICAGO
+        40 OPERATIONS     BOSTON
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT  DNAME FROM DEPT
+  2  WHERE DEPTNO IN (SELECT DEPTNO FROM EMP
+  3*            WHERE JOB = 'SALESMAN')
+SQL> D/
+SP2-0042: unknown command "D/" - rest of line ignored.
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT  DNAME FROM DEPT
+  2  WHERE DEPTNO IN (SELECT DEPTNO FROM EMP
+  3*            WHERE JOB = 'SALESMAN')
+SQL> /
+
+DNAME
+--------------
+SALES
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT LOC FROM DEPT
+  2  WHERE DEPTNO IN (SELECT DEPTNO FROM EMP
+  3*            WHERE HIREDATE = '1-JAN=1981')
+SQL> /
+
+no rows selected
+
+SQL> 
+SQL> SELECT * FROM EMP;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL     
+---------- ---------- --------- ---------- --------- ---------- ----
+      7369 SMITH      CLERK           7902 17-DEC-80        800         
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600     
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250     
+      7566 JONES      MANAGER         7839 02-APR-81       2975         
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250     
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850         
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450         
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000         
+      7839 KING       PRESIDENT            17-NOV-81       5000         
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500         
+      7876 ADAMS      CLERK           7788 23-MAY-87       1100         
+      7900 JAMES      CLERK           7698 03-DEC-81        950         
+      7902 FORD       ANALYST         7566 03-DEC-81       3000         
+      7934 MILLER     CLERK           7782 23-JAN-82       1300         
+
+14 rows selected.
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1* SELECT * FROM EMP
+SQL> ED
+Wrote file afiedt.buf
+
+  1   SELECT LOC FROM DEPT
+  2   WHERE DEPTNO IN (SELECT DEPTNO FROM EMP
+  3*             WHERE (HIREDATE BETWEEN '1-JAN=1981' AND '31-DEC-19
+SQL> /
+            WHERE (HIREDATE BETWEEN '1-JAN=1981' AND '31-DEC-1981')
+                                                                  *
+ERROR at line 3:
+ORA-00907: missing right parenthesis
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1   SELECT LOC FROM DEPT
+  2   WHERE DEPTNO IN (SELECT DEPTNO FROM EMP
+  3*             WHERE (HIREDATE BETWEEN '1-JAN=1981' AND '31-DEC-19
+SQL> /
+
+LOC
+-------------
+NEW YORK
+DALLAS
+CHICAGO
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1   SELECT LOC FROM DEPT
+  2   WHERE DEPTNO IN (SELECT DEPTNO FROM EMP
+  3*             WHERE (HIREDATE BETWEEN '1-JAN-1981' AND '31-DEC-19
+SQL> /
+
+LOC
+-------------
+NEW YORK
+DALLAS
+CHICAGO
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT * FROM DEPT
+  2* WHERE LOC LIKE '%O%O%'
+SQL> /
+
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        40 OPERATIONS     BOSTON
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT COUNT (EMPNO) FROM EMP
+  2  WHERE JOB IN 'SALESMAN' AND DEPTNO IN (SELECT DEPTNO FROM DEPT
+  3*                                    WHERE LOC IN ('NEWYORK', 'CH
+SQL> /
+
+COUNT(EMPNO)
+------------
+           4
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT EMPNO FROM EMP
+  2  WHERE JOB IN 'SALESMAN' AND DEPTNO IN (SELECT DEPTNO FROM DEPT
+  3*                                    WHERE LOC IN ('NEWYORK', 'CH
+SQL> /
+
+     EMPNO
+----------
+      7499
+      7521
+      7654
+      7844
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT COUNT(*) FROM EMP
+  2  WHERE JOB IN 'SALESMAN' AND DEPTNO IN (SELECT DEPTNO FROM DEPT
+  3*                                    WHERE LOC IN ('NEWYORK', 'CH
+SQL> /
+
+  COUNT(*)
+----------
+         4
+
+SQL> ED]
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT DNAME FROM DEPT
+  2  WHERE DEPTNO IN (SELECT DEPTNO  FROM EMP
+  3*            WHERE (HIREDATE  BETWEEN '1-JAN-1981' AND '31-DEC-19
+SQL> /
+                WHERE (HIREDATE  BETWEEN '1-JAN-1981' AND '31-DEC-19
+                                                                    
+ERROR at line 3:
+ORA-00907: missing right parenthesis
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT DNAME FROM DEPT
+  2  WHERE DEPTNO IN (SELECT DEPTNO  FROM EMP
+  3*            WHERE (HIREDATE  BETWEEN '1-JAN-1981' AND '31-DEC-19
+SQL> /
+
+DNAME
+--------------
+ACCOUNTING
+RESEARCH
+SALES
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT LOC FROM DEPT
+  2  WHERE DEPTNO IN (SELECT DEPTNO FROM EMP
+  3* WHERE COMM IS NOT NULL)
+  4  /
+
+LOC
+-------------
+CHICAGO
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1* SELECT * FROM EMP
+SQL> /
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL     
+---------- ---------- --------- ---------- --------- ---------- ----
+      7369 SMITH      CLERK           7902 17-DEC-80        800         
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600     
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250     
+      7566 JONES      MANAGER         7839 02-APR-81       2975         
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250     
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850         
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450         
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000         
+      7839 KING       PRESIDENT            17-NOV-81       5000         
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500         
+      7876 ADAMS      CLERK           7788 23-MAY-87       1100         
+      7900 JAMES      CLERK           7698 03-DEC-81        950         
+      7902 FORD       ANALYST         7566 03-DEC-81       3000         
+      7934 MILLER     CLERK           7782 23-JAN-82       1300         
+
+14 rows selected.
+
+SQL> SELECT * FROM DEPT;
+
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        10 ACCOUNTING     NEW YORK
+        20 RESEARCH       DALLAS
+        30 SALES          CHICAGO
+        40 OPERATIONS     BOSTON
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT * FROM EMP
+  2  WHERE JOB = (SELECT JOB FROM EMP
+  3  WHERE ENAME = 'SMITH') AND DEPTNO IN (SELECT DEPTNO FROM DEPT
+  4  WHERE DEPTNO = (SELECT DEPTNO FROM EMP
+  5  WHERE ENAME = 'JONES') AND SAL > (SELECT SAL FROM EMP
+  6* WHERE ENAME= 'TURNER')
+  7  /
+WHERE ENAME= 'TURNER')
+                     *
+ERROR at line 6:
+ORA-00907: missing right parenthesis
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT * FROM EMP
+  2  WHERE JOB = (SELECT JOB FROM EMP
+  3  WHERE ENAME = 'SMITH') AND DEPTNO IN (SELECT DEPTNO FROM DEPT
+  4  WHERE DEPTNO = (SELECT DEPTNO FROM EMP
+  5  WHERE ENAME = 'JONES') AND SAL > (SELECT SAL FROM EMP
+  6* WHERE ENAME= 'TURNER'))
+SQL> /
+
+no rows selected
+
+SQL> SELECT * FORM DEPT
+  2  ;
+SELECT * FORM DEPT
+         *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> SELECT * FROM DEPT;
+
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        10 ACCOUNTING     NEW YORK
+        20 RESEARCH       DALLAS
+        30 SALES          CHICAGO
+        40 OPERATIONS     BOSTON
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT * FROM EMP
+  2  WHERE DEPTNO IN (SELECT DEPTNO FROM EMP
+  3* WHERE LOC IN DALLAS)
+SQL> /
+WHERE LOC IN DALLAS)
+             *
+ERROR at line 3:
+ORA-00904: "DALLAS": invalid identifier
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT * FROM EMP
+  2  WHERE DEPTNO IN (SELECT DEPTNO FROM EMP
+  3* WHERE LOC IN 'DALLAS')
+SQL> /
+WHERE LOC IN 'DALLAS')
+      *
+ERROR at line 3:
+ORA-00904: "LOC": invalid identifier
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT * FROM EMP
+  2  WHERE DEPTNO IN (SELECT DEPTNO FROM DEPT
+  3* WHERE LOC IN 'DALLAS')
+SQL> /
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL     
+---------- ---------- --------- ---------- --------- ---------- ----
+      7369 SMITH      CLERK           7902 17-DEC-80        800         
+      7566 JONES      MANAGER         7839 02-APR-81       2975         
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000         
+      7876 ADAMS      CLERK           7788 23-MAY-87       1100         
+      7902 FORD       ANALYST         7566 03-DEC-81       3000         
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT * FROM DEPT
+  2  WHERE DEPTNO IN (SELECT DEPTNO FROM EMP
+  3*            WHERE JOB = 'ACCOUNTING')
+SQL> /
+
+no rows selected
+
+SQL> SELECT * FROM EMP;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL     
+---------- ---------- --------- ---------- --------- ---------- ----
+      7369 SMITH      CLERK           7902 17-DEC-80        800         
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600     
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250     
+      7566 JONES      MANAGER         7839 02-APR-81       2975         
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250     
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850         
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450         
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000         
+      7839 KING       PRESIDENT            17-NOV-81       5000         
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500         
+      7876 ADAMS      CLERK           7788 23-MAY-87       1100         
+      7900 JAMES      CLERK           7698 03-DEC-81        950         
+      7902 FORD       ANALYST         7566 03-DEC-81       3000         
+      7934 MILLER     CLERK           7782 23-JAN-82       1300         
+
+14 rows selected.
+
+SQL> SELECT * FROM DEPT;
+
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        10 ACCOUNTING     NEW YORK
+        20 RESEARCH       DALLAS
+        30 SALES          CHICAGO
+        40 OPERATIONS     BOSTON
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1   SELECT * FROM DEPT
+  2*  WHERE DNAME = 'ACCOUNTING'
+SQL> /
+
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        10 ACCOUNTING     NEW YORK
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1   SELECT LOC FROM DEPT
+  2*  WHERE DNAME = 'ACCOUNTING'
+SQL> /
+
+LOC
+-------------
+NEW YORK
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1   SELECT * FROM DEPT
+  2*  WHERE LOC = 'NEW YORK'
+SQL> /
+
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        10 ACCOUNTING     NEW YORK
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1   SELECT * FROM EMP
+  2   WHERE JOB IN ( 'CLERKS', 'ANALYST') AND DEPTNO (SELECT DEPTNO 
+  3*                                            WHERE LOC != 'DALLAS
+SQL> /
+ WHERE JOB IN ( 'CLERKS', 'ANALYST') AND DEPTNO (SELECT DEPTNO FROM 
+                                                 *
+ERROR at line 2:
+ORA-00936: missing expression
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1   SELECT * FROM EMP
+  2   WHERE JOB IN ( 'CLERKS', 'ANALYST') AND DEPTNO (SELECT DEPTNO 
+  3*                                            WHERE LOC != 'DALLAS
+SQL> /
+ WHERE JOB IN ( 'CLERKS', 'ANALYST') AND DEPTNO (SELECT DEPTNO FROM 
+                                                 *
+ERROR at line 2:
+ORA-00936: missing expression
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1   SELECT * FROM EMP
+  2   WHERE JOB IN ( 'CLERKS', 'ANALYST') AND DEPTNO IN (SELECT DEPT
+  3*                                            WHERE LOC != 'DALLAS
+SQL> /
+                                                WHERE LOC != 'DALLAS
+                                                      *
+ERROR at line 3:
+ORA-00904: "LOC": invalid identifier
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1   SELECT * FROM EMP
+  2   WHERE JOB IN ( 'CLERKS', 'ANALYST') AND DEPTNO IN (SELECT DEPT
+  3*                                            WHERE LOC != 'DALLAS
+SQL> /
+
+no rows selected
+
+SQL> SELECT * FROM EMP;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL     
+---------- ---------- --------- ---------- --------- ---------- ----
+      7369 SMITH      CLERK           7902 17-DEC-80        800         
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600     
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250     
+      7566 JONES      MANAGER         7839 02-APR-81       2975         
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250     
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850         
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450         
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000         
+      7839 KING       PRESIDENT            17-NOV-81       5000         
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500         
+      7876 ADAMS      CLERK           7788 23-MAY-87       1100         
+      7900 JAMES      CLERK           7698 03-DEC-81        950         
+      7902 FORD       ANALYST         7566 03-DEC-81       3000         
+      7934 MILLER     CLERK           7782 23-JAN-82       1300         
+
+14 rows selected.
+
+SQL> SELECT * FROM DEPT;
+
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        10 ACCOUNTING     NEW YORK
+        20 RESEARCH       DALLAS
+        30 SALES          CHICAGO
+        40 OPERATIONS     BOSTON
+
+SQL> SPOOL"C:\SQL1.TXT";
+SQL> SPOOL OFF
+SQL> SPOOLOFF;
+SP2-0042: unknown command "SPOOLOFF" - rest of line ignored.
+SQL> ED
+Wrote file afiedt.buf
+
+  1* SELECT * FROM DEPT
+SQL> SPOOL OFF;
+not spooling currently
+SQL> SPOOL OFF ;
+not spooling currently
+SQL> SPOOL OFF;
+not spooling currently
+SQL> SPOOLOFF;
+SP2-0042: unknown command "SPOOLOFF" - rest of line ignored.
+SQL> SPOOL OF;
+SQL> 

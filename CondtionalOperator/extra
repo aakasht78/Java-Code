@@ -1,0 +1,5 @@
+ int large1= a>b?a:b;
+        int large2 = large1>c?large1:c;
+        int result= (large2>d?large2:d);
+
+        System.out.println(result);
