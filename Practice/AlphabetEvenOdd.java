@@ -6,7 +6,7 @@ public class AlphabetEvenOdd {
                 System.out.println(start +" Is Even Alphabet ");
             }
             else{
-                System.out.println(start + " Is odd Alphabet ");  //dsd
+                // System.out.println(start + " Is odd Alphabet ");  
             }
             start++;
         }
