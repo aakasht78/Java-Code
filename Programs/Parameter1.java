@@ -9,6 +9,6 @@ class Parameter1 {
     public static void main(String[] args) {
         power(3,4);
         power(5+5,4);
-        power(2*6/3,3   );
+        power(2*6/3,3);
     }
 }
