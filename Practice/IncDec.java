@@ -27,10 +27,10 @@ public class IncDec {
         b=e++ - --e; 
 
      System.out.println("=============Output============");
-     System.out.println("a :-"+a);    
-     System.out.println("b :-"+b);    
-     System.out.println("c :-"+c);    
-     System.out.println("d :-"+d);    
-     System.out.println("e :-"+e);    
+     System.out.println("a :-"+a); //78   
+     System.out.println("b :-"+b); //19  
+     System.out.println("c :-"+c); //23   
+     System.out.println("d :-"+d); //54   
+     System.out.println("e :-"+e); //78   
     }
 }
