@@ -1,3 +1,4 @@
+// Read 5 names of Bollywood Singers From Users
 import java.util.Scanner;
 class A6
 {
