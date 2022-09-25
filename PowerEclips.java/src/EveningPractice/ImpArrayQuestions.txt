@@ -1,0 +1,4 @@
+ImpQuestions
+
+4. create a char[] with data 'a','p','p','l','e'
+read a character from the user and check if it is present in the array or not and display found if present, display not found if not present
