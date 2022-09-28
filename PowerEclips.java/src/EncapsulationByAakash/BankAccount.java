@@ -16,7 +16,7 @@ public class BankAccount {
 		 this.accno = accno;
 		 this.pin = pin;
 		 this.ifsc = ifsc;
-		 this.balance = balance;
+		 this.balance = balance;	
 	 }
 	 public String getName() {
 		 return name;

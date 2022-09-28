@@ -28,6 +28,7 @@ public class BankAccountDriver {
 			 
 			 b.withdraw(accno, pin, withdraw);
 //			 b.withdraw(123456, 1234, 4000);
+			 break;
 		  }
 		 case 2:{
 //			 User Input
@@ -45,6 +46,7 @@ public class BankAccountDriver {
 			 
 			 b.depoite(accno, pin, ifsc, deposite);
 //			 b.depoite(123456, 1234, "150XYZ", 10000);
+			 break;
 		 }
 		 case 3 :{
 //			 User Input
@@ -60,6 +62,7 @@ public class BankAccountDriver {
 			 
 			 b.SetPin(accno, pin, Newpin);
 //			 b.SetPin(123456, 1234, 1234);
+			 break;
 		 }
 		 case 4 :{
 //			 User Input
@@ -71,6 +74,7 @@ public class BankAccountDriver {
 			 
 			 b.getBalance(accno, pin);
 //			 b.getBalance(123456, 1234);
+			 break;
 			
 		 }
 		 default:{

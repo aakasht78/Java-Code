@@ -1,32 +1,27 @@
 package Encapsulation1;
 
 public class Student {
-	private String Name;
-	private int age;
-	 
-	 
-	public int getAge() {
+	String name;
+	int age;
+	
+	public int getAge()
+	{
 		return age;
 	}
-	public void setAge(int age) {
-		if(age > 15 || age < 3) {
-			System.out.println("Age is invalid for this class");
+	
+	public void setAge(int age)
+	{
+		if(age>10 && age<20)
+		{
+			System.out.println("your eligible for these School");
 		}
-		else {
-		this.age = age;
+		else
+		{
+			this.age = age;
 		}
+		
 	}
 	
-	public void setName (String Name) {
-		if(Name == "AAKASH") {
-			System.out.println("Correct Name");
-		}
-		else 
-			this.Name =Name;
-	}
-	public String getName() {
-		return Name;
-	}
-	 
+	
 	 
 }
