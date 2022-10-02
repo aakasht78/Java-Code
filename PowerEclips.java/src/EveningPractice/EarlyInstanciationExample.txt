@@ -1,0 +1,39 @@
+public class Mobile {
+	String Brand;
+	double price;
+	int ram;
+	int hdd;
+	String processor;
+	
+	Battery b=new Battery("XYZ",1500,5000,"Lion",20);
+	Mobile(){
+		
+	}
+	Mobile(String Brand,double price,int ram,int hdd,String Processor)
+	{
+		this.Brand=Brand;
+		this.price=price;
+		this.ram=ram;
+		this.hdd=hdd;
+		this.processor=Processor;
+	}
+	public void DisplayMobile()
+	{
+		System.out.println(Brand);
+		System.out.println(price);
+		System.out.println(ram);
+		System.out.println(hdd);
+		System.out.println(processor);
+//Has A RelationShip Early Binding
+package Relationship;
+
+public class MobileDriver {
+
+	public static void main(String[] args) {
+		
+		Mobile m1=new Mobile("SamSung",60000.0,8,1,"I7");
+		m1.DisplayMobile();
+		System.out.println("========================");
+		m1.b.DisplayBattery();
+	}
+}
