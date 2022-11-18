@@ -14,8 +14,9 @@ public class JdbcDomo3 {
 			System.out.println("Connection Establish Successfully");
 //			st.execute("create database newjdbc");
 			
-			st.execute("create table emp (id int , name varchar(50), salary double) ");
+		
 			System.out.println("table created successfully");
+			
 			} 
 		
 		catch (ClassNotFoundException e) {
